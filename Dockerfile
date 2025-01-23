@@ -4,7 +4,7 @@ WORKDIR /root/
 
 # Install necessary dependencies
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y libleveldb-dev curl gpg ca-certificates tar dirmngr openssl && \
+    apt-get install -y libleveldb-dev curl gpg ca-certificates tar dirmngr && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and verify Shibacoin binaries
@@ -17,12 +17,11 @@ RUN curl -Lk -o shibacoin-1.0.3.0-linux.tar.gz https://github.com/shibacoinppc/s
 # Install Python modules
 RUN pip install uvloop
 
-# Clone and use ElectrumX server repository
-RUN git clone --branch main https://github.com/CryptoDevelopmentServices/docker-electrumx-shibacoin.git && \
-    cd docker-electrumx-shibacoin && \
-    cp -r electrumx /usr/local/lib/python3.8/dist-packages/ && \
-    pip install -r requirements.txt && \
-    cd .. && rm -rf docker-electrumx-shibacoin
+# Clone the specific version of the ElectrumX server repository and install
+RUN git clone --branch main https://github.com/CryptoDevelopmentServices/electrumx-shic.git && \
+    cd electrumx-shic && \
+    pip3 install . && \
+    rm -rf /root/electrumx-shic
 
 # Copy the entrypoint script
 COPY entrypoint.sh /entrypoint.sh
