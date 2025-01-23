@@ -7,18 +7,24 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y libleveldb-dev curl gpg ca-certificates tar dirmngr && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Download and install Shibacoin binaries
-RUN curl -o shibacoin-1.0.3.0-linux.tar.gz -Lk https://github.com/shibacoinppc/shibacoin/releases/download/v1.0.3.0/shibacoin-1.0.3.0-linux.tar.gz && \
+# Download and verify Shibacoin binaries
+RUN curl -Lk -o shibacoin-1.0.3.0-linux.tar.gz https://github.com/shibacoinppc/shibacoin/releases/download/v1.0.3.0/shibacoin-1.0.3.0-linux.tar.gz && \
     tar -xvf shibacoin-1.0.3.0-linux.tar.gz && \
+    ls -la shibacoin-1.0.3.0-linux* && \
     rm shibacoin-1.0.3.0-linux.tar.gz && \
-    install -m 0755 -o root -g root -t /usr/local/bin shibacoin-1.0.3.0-linux
+    if [ -d "shibacoin-1.0.3.0/bin" ]; then \
+        install -m 0755 -o root -g root -t /usr/local/bin shibacoin-1.0.3.0/bin/*; \
+    else \
+        echo "Error: Extracted directory 'shibacoin-1.0.3.0/bin' not found."; \
+        exit 1; \
+    fi
 
 # Install Python modules
 RUN pip install uvloop
 
 # Clone the specific version of the ElectrumX server repository and install
 RUN git clone --branch v1.0.3.0 https://github.com/CryptoDevelopmentServices/docker-electrumx-shibacoin.git && \
-    cd electrumx-shibacoin && \
+    cd docker-electrumx-shibacoin && \
     pip3 install . && \
     rm -rf /root/docker-electrumx-shibacoin
 
