@@ -18,7 +18,7 @@ RUN curl -Lk -o shibacoin-1.0.3.0-linux.tar.gz https://github.com/shibacoinppc/s
 RUN pip install uvloop
 
 # Clone the specific version of the ElectrumX server repository and install
-RUN git clone --branch v1.0.3.0 https://github.com/CryptoDevelopmentServices/docker-electrumx-shibacoin.git && \
+RUN git clone --branch main https://github.com/CryptoDevelopmentServices/docker-electrumx-shibacoin.git && \
     cd docker-electrumx-shibacoin && \
     pip3 install . && \
     rm -rf /root/docker-electrumx-shibacoin
