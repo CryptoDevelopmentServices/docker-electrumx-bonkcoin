@@ -11,7 +11,7 @@ RUN apt-get update && apt-get upgrade -y && \
 RUN curl -o shibacoin-1.0.3.0-linux.tar.gz -Lk https://github.com/shibacoinppc/shibacoin/releases/download/v1.0.3.0/shibacoin-1.0.3.0-linux.tar.gz && \
     tar -xvf shibacoin-1.0.3.0-linux.tar.gz && \
     rm shibacoin-1.0.3.0-linux.tar.gz && \
-    install -m 0755 -o root -g root -t /usr/local/bin shibacoin-1.0.3.0/bin/*
+    install -m 0755 -o root -g root -t /usr/local/bin shibacoin-1.0.3.0/*
 
 # Install Python modules
 RUN pip install uvloop
